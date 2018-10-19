@@ -134,6 +134,25 @@ runApp(system.file("examples/12-types", package="shinyTree"))
 
 An example demonstrating node types with custom icons.
 
+#### 13-datatree
+
+```
+library(shiny)
+runApp(system.file("examples/13-datatree", package="shinyTree"))
+```
+
+An example demonstrating how to import a datatree instead of a list.
+
+
+#### 14-api
+
+```
+library(shiny)
+runApp(system.file("examples/14-api", package="shinyTree"))
+```
+
+An example demonstrating how to extend the operations on the tree to the rest of
+the [jsTree's core functionality](https://www.jstree.com/api/).
 
 
 Known Bugs
