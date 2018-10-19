@@ -1,0 +1,22 @@
+Package: shinyTree
+Type: Package
+Title: jsTree Bindings for Shiny
+Version: 1.2.6
+Date: 2018-10-04
+Description: Exposes bindings to jsTree -- a JavaScript library
+    that supports interactive trees -- to enable a rich, editable trees in
+    Shiny.
+License: MIT + file LICENSE
+Depends:
+    R (>= 2.15.1),
+    methods
+Imports:
+    shiny (>= 0.9.0),
+    stringr,
+    jsonlite
+Suggests:
+    testthat
+BugReports: https://github.com/trestletech/shinyTree/issues
+Roxygen: list(wrap = TRUE)
+RoxygenNote: 6.0.1
+Encoding: UTF-8
