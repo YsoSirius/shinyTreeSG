@@ -5,7 +5,7 @@ library(shinyTree)
 #' Define custom JS functions to implement jsTree core functionality
 #' @author McClelland Legge \email{McClelland.Legge@@gmail.com}
 
-shinyServer(function(input, output, session) {
+function(input, output, session) {
   
   observeEvent(input$reset, {
     js$resetTree("tree")
@@ -21,4 +21,4 @@ shinyServer(function(input, output, session) {
     )
   })
   
-})
+}
