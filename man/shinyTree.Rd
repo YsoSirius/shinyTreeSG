@@ -7,7 +7,7 @@
 shinyTree(outputId, checkbox = FALSE, search = FALSE, dragAndDrop = FALSE,
   types = NULL, theme = "default", themeIcons = TRUE, themeDots = TRUE,
   contextmenu = TRUE, sort = TRUE, unique = TRUE, wholerow = TRUE,
-  searchtime = 1000)
+  searchtime = 1000, state = TRUE)
 }
 \arguments{
 \item{outputId}{The ID associated with this element}

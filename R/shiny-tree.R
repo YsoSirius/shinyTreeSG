@@ -25,7 +25,8 @@ shinyTree <- function(outputId, checkbox=FALSE,
                         search=FALSE, dragAndDrop=FALSE, 
                         types=NULL, theme="default", themeIcons=TRUE, 
                         themeDots=TRUE, contextmenu=TRUE,
-                        sort=TRUE, unique=TRUE, wholerow=TRUE, searchtime=1000){
+                        sort=TRUE, unique=TRUE, wholerow=TRUE, searchtime=1000,
+                        state = TRUE){
   searchEl <- shiny::div("")
   if (search == TRUE){
     search <- paste0(outputId, "-search-input")
@@ -44,7 +45,6 @@ shinyTree <- function(outputId, checkbox=FALSE,
   theme.tags<-shiny::tags$link(rel = 'stylesheet',
                                type = 'text/css',
                                href = paste('shinyTree/jsTree-3.3.3/themes/',theme,'/style.min.css',sep=""))
-  
   
   if(!is.null(types)){
     types <- paste("sttypes =",types)
@@ -73,7 +73,8 @@ shinyTree <- function(outputId, checkbox=FALSE,
         `data-st-contextmenu`=contextmenu,
         `data-st-sort`=sort,
         `data-st-unique`=unique,
-        `data-st-wholerow`=wholerow
+        `data-st-wholerow`=wholerow,
+        `data-st-state`=state
         )
   )
 }

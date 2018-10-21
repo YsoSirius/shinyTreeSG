@@ -4,7 +4,8 @@
 \alias{updateTree}
 \title{Update the tree with new data}
 \usage{
-updateTree(session, treeId, data = NULL)
+updateTree(session, treeId, data = NULL, skipload = TRUE,
+  fortgetstate = TRUE)
 }
 \arguments{
 \item{session}{The current session variable.}

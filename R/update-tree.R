@@ -7,20 +7,21 @@
 #' @param treeId The identifier for the shinyTree object
 #' @param data JSON data or nested list representing the new tree structure.
 #' @export
-updateTree <- function(session, treeId, data=NULL) {
+updateTree <- function(session, treeId, data=NULL, skipload=TRUE, fortgetstate=TRUE) {
   if(is.list(data)){
     data<-Rlist2json(data)
   }
-  message <- list(type="updateTree",data=data)
+  message <- list(type="updateTree",data=data, skipload=skipload, fortgetstate=fortgetstate)
   if(!is.null(message)) {
     session$sendInputMessage(treeId, message)
   }
 }
 
 
-#' @importFrom jsonlite toJSON
+#' @importFrom rjson toJSON
+## @importFrom jsonlite toJSON
 Rlist2json <- function(nestedList) {
-  json <- as.character(toJSON(get_flatList(nestedList), auto_unbox = T))
+   as.character(jsonlite::toJSON(get_flatList(nestedList), auto_unbox = T))
 }
 
 get_flatList <- function(nestedList, flatList = NULL, parent = "#") {

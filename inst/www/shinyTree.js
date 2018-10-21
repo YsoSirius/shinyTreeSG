@@ -44,13 +44,9 @@ var shinyTree = function(){
       }
       
       var tree = $(el).jstree({'core' : {
-        "animation" : 100,
         "check_callback" : ($elem.data('st-dnd') === 'TRUE'), 
-        'themes': {'name': $elem.data('st-theme'), 
-        'responsive': true,
+        'themes': {'name': $elem.data('st-theme'), 'responsive': true, 'icons': ($elem.data('st-theme-icons') === 'TRUE'), 'dots': ($elem.data('st-theme-dots') === 'TRUE') },
         "state" : { "key" : "jstree" },
-        'icons': ($elem.data('st-theme-icons') === 'TRUE'),
-        'dots': ($elem.data('st-theme-dots') === 'TRUE') }
           },
           "types" : sttypes,
           plugins: plugins});
@@ -141,7 +137,7 @@ var shinyTree = function(){
           toReturn.push(clean);
         });
         return arrToObj(toReturn);
-      } 
+      };
       
       var tree = $.jstree.reference(el);
       if (tree) { // May not be loaded yet.
@@ -156,26 +152,24 @@ var shinyTree = function(){
     },
     setValue: function(el, value) {},
     subscribe: function(el, callback) {
-      $(el).on("open_node.jstree", function(e) {
-        callback();
-      });
-      
       $(el).on("close_node.jstree", function(e) {
         callback();
       });
-      
+      $(el).on("set_state.jstree", function(e) {
+        callback();
+      });      
+      $(el).on("open_node.jstree", function(e) {
+        callback();
+      });
       $(el).on("changed.jstree", function(e) {
         callback();
       });
-      
       $(el).on("ready.jstree", function(e){
-        // Initialize the data.
         callback();
-      })
-      
+      });
       $(el).on("move_node.jstree", function(e){
         callback();
-      })
+      });
     },
     unsubscribe: function(el) {
       $(el).off(".jstree");
@@ -184,7 +178,8 @@ var shinyTree = function(){
       // This receives messages of type "updateTree" from the server.
       if(message.type == 'updateTree' && typeof message.data !== 'undefined') {
           $(el).jstree(true).settings.core.data = JSON.parse(message.data);
-          $(el).jstree(true).refresh(true, true);
+          //$(el).jstree(true).refresh(message.skipload, message.fortgetstate);
+          $(el).jstree(true).refresh(true, false);
       }
     }
   });
