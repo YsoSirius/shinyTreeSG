@@ -11,14 +11,24 @@ fixIconName <- function(icon){
       icon
     }else{
       iconGroup <- stringr::str_match(icon,"(\\S+)-") #ie "fa-file"
+      if (iconGroup[2] == "fa") {
+        iconGroup[2] = "fa "
+      }
+      if (iconGroup[2] == "glyphicon") {
+        iconGroup[2] = "glyphicon "
+      }
+      if (iconGroup[2] != "fa " & iconGroup[2] != "glyphicon ") {
+        iconGroup[2] = "fa fa-"
+      }
       if(length(iconGroup) > 1 && !is.na(iconGroup[2])){
-        paste(iconGroup[2],icon)
+        paste0(iconGroup[2],icon)
       }else{ #ie. just "file"
         paste0("fa fa-",icon)
       }
     }
   }
 }
+
 
 listToTags <- function(myList, parent=shiny::tags$ul()){
   

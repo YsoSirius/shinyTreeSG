@@ -170,6 +170,12 @@ var shinyTree = function(){
       $(el).on("move_node.jstree", function(e){
         callback();
       });
+      $(el).on("search.jstree", function(e){
+        callback();
+      });
+      $(el).on("clear_search.jstree", function(e){
+        callback();
+      });    
     },
     unsubscribe: function(el) {
       $(el).off(".jstree");

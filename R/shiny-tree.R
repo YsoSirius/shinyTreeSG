@@ -18,6 +18,8 @@
 #' @param sort If \code{TRUE}, will sort the nodes in alphabetical/numerical order.
 #' @param unique If \code{TRUE}, will ensure that no node name exists more than once.
 #' @param wholerow If \code{TRUE}, will highlight the whole selected row.
+#' @param state If \code{TRUE}, will enable the state plugin and will store the tree nodes in the 
+#' browser, so opened and selected nodes will remain after a page refresh. The key used is 'jstree'
 #' @param contextmenu If \code{TRUE}, will enable a contextmenu.
 #' @seealso \code{\link{renderTree}}
 #' @export
