@@ -17,9 +17,7 @@ updateTree <- function(session, treeId, data=NULL, skipload=TRUE, fortgetstate=T
   }
 }
 
-
-#' @importFrom rjson toJSON
-## @importFrom jsonlite toJSON
+#' @importFrom jsonlite toJSON
 Rlist2json <- function(nestedList) {
    as.character(jsonlite::toJSON(get_flatList(nestedList), auto_unbox = T))
 }
