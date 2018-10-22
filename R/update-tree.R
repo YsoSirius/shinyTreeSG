@@ -6,6 +6,10 @@
 #' @param session The current session variable.
 #' @param treeId The identifier for the shinyTree object
 #' @param data JSON data or nested list representing the new tree structure.
+#' @param skipload an option to skip showing the loading indicator.
+#' @param fortgetstate If set to true state will not be reapplied, if set to 
+#' a function (receiving the current state as argument) the result of that
+#' function will be used as state.
 #' @export
 updateTree <- function(session, treeId, data=NULL, skipload=TRUE, fortgetstate=TRUE) {
   if(is.list(data)){

@@ -1,6 +1,6 @@
 Package: shinyTree
 Type: Package
-Title: jsTree Bindings for Shiny
+Title: jsTree 3.3.6 Bindings for Shiny
 Version: 0.2.6
 Date: 2018-10-04
 Authors@R: c(

@@ -11,6 +11,9 @@ fixIconName <- function(icon){
       icon
     }else{
       iconGroup <- stringr::str_match(icon,"(\\S+)-") #ie "fa-file"
+      if (is.na(iconGroup[2])){
+        iconGroup[2] = "fa fa-"
+      }
       if (iconGroup[2] == "fa") {
         iconGroup[2] = "fa "
       }
