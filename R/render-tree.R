@@ -9,25 +9,25 @@
 #' is useful if you want to save an expression in a variable.
 #' @seealso \code{\link{shinyTree}}
 #' @export
-# renderTree <- function(expr, env = parent.frame(), quoted = FALSE){
-#   func <- shiny::exprToFunction(expr, env, quoted)
-#   return(function(shinysession, name, ...) {
-#     tree <- func()
-#     if(inherits(expr, "Node")){
-#       shiny::HTML(as.character(datatreeToTags(tree)))  
-#     } else {
-#       shiny::HTML(as.character(listToTags(tree)))  
-#     }
-#   })
-# }
 renderTree <- function(expr, env = parent.frame(), quoted = FALSE){
   func <- shiny::exprToFunction(expr, env, quoted)
   return(function(shinysession, name, ...) {
     tree <- func()
-    updateTree(shinysession,name,tree) 
-    NULL
+    if(inherits(expr, "Node")){
+      shiny::HTML(as.character(datatreeToTags(tree)))
+    } else {
+      shiny::HTML(as.character(listToTags(tree)))
+    }
   })
 }
+# renderTree <- function(expr, env = parent.frame(), quoted = FALSE){
+#   func <- shiny::exprToFunction(expr, env, quoted)
+#   return(function(shinysession, name, ...) {
+#     tree <- func()
+#     updateTree(shinysession,name,tree) 
+#     NULL
+#   })
+# }
 
 #' Render an empty ShinyTree
 #' 
