@@ -115,6 +115,12 @@ getJSON <- function(node){
     attrib <- c(attrib, paste0("\"type\": \"", type, "\""))
   }
   
+  # Handle 'class' attribute
+  class <- attr(node, "stclass")
+  if (!is.null(type)){
+    attrib <- c(attrib, paste0("\"class\": \"", class, "\""))
+  }
+  
   paste0("{",paste(attrib, collapse = ","),"}")  
 }
 
