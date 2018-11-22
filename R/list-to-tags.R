@@ -65,7 +65,7 @@ listToTags <- function(myList, parent=shiny::tags$ul()){
         el[["stid"]] <- attr(myList[[i]], "stid")
       }
       if (!is.null(attr(myList[[i]], "stclass"))){
-        el[["class"]] <- attr(myList[[i]], "stclass")
+        el[["stclass"]] <- attr(myList[[i]], "stclass")
       }
       parent <- shiny::tagAppendChild(parent, do.call(shiny::tags$li, el))
     } else{
@@ -74,7 +74,7 @@ listToTags <- function(myList, parent=shiny::tags$ul()){
         el[["stid"]] <- attr(myList[[i]], "stid")
       }
       if (!is.null(attr(myList[[i]], "stclass"))){
-        el[["class"]] <- attr(myList[[i]], "stclass")
+        el[["stclass"]] <- attr(myList[[i]], "stclass")
       }
       parent <- shiny::tagAppendChild(parent, do.call(shiny::tags$li, el))
     }
