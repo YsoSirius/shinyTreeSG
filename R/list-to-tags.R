@@ -1,40 +1,37 @@
 
 #fix icon retains backward compatibility for icon entries that are not fully specified
 fixIconName <- function(icon){
-  if(is.null(icon)){
+  if (is.null(icon)) {
     NULL
-  }else if(grepl("[/\\]",icon)){ #ie. "/images/ball.jpg"
+  } else if (grepl("[/\\]",icon)) { #ie. "/images/ball.jpg"
     icon
-  }else{
-    iconGroup <- stringr::str_subset(icon,"(\\S+) \\1-") #ie "fa fa-file"
-    if(length(iconGroup) > 0){
+  } else{
+    iconGroup <-  grep(pattern = "(\\S+) \\1-", x = icon, value=TRUE) #ie "fa fa-file"
+    if (length(iconGroup) > 0L) {
       icon
-    }else{
-      iconGroup <- stringr::str_match(icon,"(\\S+)-") #ie "fa-file"
-      if (is.na(iconGroup[2])){
-        iconGroup[2] = "fa fa-"
+    } else {
+      icoGr = regmatches(x = icon, regexpr("(\\S+)-", icon))
+      if (length(icoGr)==0) {
+        icoGr = "fa fa-"
+      } else if (icoGr == "fa-") {
+        icoGr = "fa "
+      } else if (icoGr == "glyphicon-") {
+        icoGr = "glyphicon "
+      } else {
+        icoGr = "fa fa-"
       }
-      if (iconGroup[2] == "fa") {
-        iconGroup[2] = "fa "
+      if (!is.na(icoGr)) {
+        paste0(icoGr, icon)
+      } else { #ie. just "file"
+        paste0("fa fa-", icon)
       }
-      if (iconGroup[2] == "glyphicon") {
-        iconGroup[2] = "glyphicon "
-      }
-      if (iconGroup[2] != "fa " & iconGroup[2] != "glyphicon ") {
-        iconGroup[2] = "fa fa-"
-      }
-      if(length(iconGroup) > 1 && !is.na(iconGroup[2])){
-        paste0(iconGroup[2],icon)
-      }else{ #ie. just "file"
-        paste0("fa fa-",icon)
-      }
+      
     }
   }
 }
 
 
 listToTags <- function(myList, parent=shiny::tags$ul()){
-  
   # Handle parent tag attributes
   el <- list(parent)
   if (!is.null(attr(myList, "stid"))){
@@ -52,9 +49,7 @@ listToTags <- function(myList, parent=shiny::tags$ul()){
   # There's probably an *apply way to do this. Whatevs.
   for (i in 1:length(myList)){
     name <- names(myList)[i]
-    if (is.null(name)){
-      name <- ""
-    }
+    if (is.null(name)){name <- ""}
     
     attribJSON <- getJSON(myList[[i]])
     
@@ -115,7 +110,13 @@ getJSON <- function(node){
     attrib <- c(attrib, paste0("\"type\": \"", type, "\""))
   }
   
-  paste0("{",paste(attrib, collapse = ","),"}")  
+  # Handle 'class' attribute
+  class <- attr(node, "stclass")
+  if (!is.null(type)){
+    attrib <- c(attrib, paste0("\"class\": \"", class, "\""))
+  }
+  
+  paste0("{",paste0(attrib, collapse = ","),"}")  
 }
 
 

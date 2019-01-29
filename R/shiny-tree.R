@@ -37,9 +37,9 @@
 shinyTree <- function(outputId, checkbox=F, 
                         search=F, dragAndDrop=F, 
                         types=NULL, theme="default", themeIcons=T, 
-                        themeDots=T, contextmenu=T,
-                        sort=T, unique=T, wholerow=T, searchtime=1000,
-                        state = T, openAll=F, closeAll=F, toggleStripes=F,
+                        themeDots=T, contextmenu=F,
+                        sort=F, unique=T, wholerow=T, searchtime=1000,
+                        state = F, openAll=F, closeAll=F, toggleStripes=F,
                         toggleDots=F, toggleIcons=F){
   searchEl <- shiny::div("")
   if (search == TRUE){
@@ -57,11 +57,14 @@ shinyTree <- function(outputId, checkbox=F,
   extraBtns = list(openAll, closeAll, toggleStripes, toggleDots, toggleIcons)
   names(extraBtns) <- c("openAll", "closeAll", "toggleStripes", "toggleDots", "toggleIcons")
   if (any(unlist(lapply(extraBtns, is.logical)))){
-    
     ind = which(unlist(lapply(extraBtns, is.logical)))
-    extraBtns[ind] = lapply(extraBtns[ind], FUN = function(x) { if (x) list(id=NULL, class=NULL, label=NULL, icon=NULL) else F })
+    extraBtns[ind] = lapply(extraBtns[ind], FUN = function(x) { 
+      if (x) list(id=NULL, class=NULL, label=NULL, icon=NULL) else F })
   }
   
+  ## use fixIconName ???
+  ## more actions
+  ## combine t dropdown menue?
   if (is.list(extraBtns[[1]])) {
     openAll <- extraBtns$openAll
     if (is.null(openAll$id)) {
@@ -164,7 +167,7 @@ shinyTree <- function(outputId, checkbox=F,
   # define theme tags (default, default-dark, or proton)
   theme.tags<-shiny::tags$link(rel = 'stylesheet',
                                type = 'text/css',
-                               href = paste('shinyTree/jsTree-3.3.6/themes/',theme,'/style.min.css',sep=""))
+                               href = paste('shinyTree/jsTree-3.3.7/themes/',theme,'/style.min.css',sep=""))
   
   if(!is.null(types)){
     types <- paste("sttypes =",types)
@@ -177,7 +180,7 @@ shinyTree <- function(outputId, checkbox=F,
       shiny::tags$link(rel = "stylesheet", 
                 type = "text/css", 
                 href = "shared/font-awesome/css/font-awesome.min.css"),
-      shiny::tags$script(src = 'shinyTree/jsTree-3.3.6/jstree.min.js'),
+      shiny::tags$script(src = 'shinyTree/jsTree-3.3.7/jstree.min.js'),
       shiny::tags$script(src = 'shinyTree/shinyTree.js'),
       shiny::tags$script(shiny::HTML(types))
     )),

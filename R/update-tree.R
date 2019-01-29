@@ -16,19 +16,19 @@ updateTree <- function(session, treeId, data=NULL, skipload=TRUE, fortgetstate=T
     data<-Rlist2json(data)
   }
   message <- list(type="updateTree",data=data, skipload=skipload, fortgetstate=fortgetstate)
-  if(!is.null(message)) {
+  if (!is.null(message)) {
     session$sendInputMessage(treeId, message)
   }
 }
 
 #' @importFrom jsonlite toJSON
 Rlist2json <- function(nestedList) {
-   as.character(jsonlite::toJSON(get_flatList(nestedList), auto_unbox = T))
+   as.character(toJSON(get_flatList(nestedList), auto_unbox = T))
 }
 
 get_flatList <- function(nestedList, flatList = NULL, parent = "#") {
   for (name in names(nestedList)) {
-    additionalAttributeNames <- c("icon","type")
+    additionalAttributeNames <- c("icon","type", "class")
     additionalAttributes<- lapply(additionalAttributeNames,function(attribute){
       if(attribute == "icon"){
         fixIconName(attr(nestedList[[name]],paste0("st",attribute)))
@@ -37,7 +37,8 @@ get_flatList <- function(nestedList, flatList = NULL, parent = "#") {
       }
     })
     names(additionalAttributes) <-  additionalAttributeNames
-    additionalAttributes <- additionalAttributes[which(sapply(additionalAttributes,Negate(is.null)))]
+    
+    additionalAttributes <- additionalAttributes[lengths(additionalAttributes) != 0]
 
     nodeData <- append(
       list(
@@ -53,9 +54,10 @@ get_flatList <- function(nestedList, flatList = NULL, parent = "#") {
     )
 
     flatList = c(flatList,list(nodeData))
-    if (is.list(nestedList[[name]]))
-      flatList =
-        get_flatList(nestedList[[name]], flatList, parent = as.character(length(flatList)))
+    if (is.list(nestedList[[name]])) {
+      flatList = get_flatList(nestedList[[name]], flatList, parent = as.character(length(flatList)))
+    }
   }
   flatList
 }
+
