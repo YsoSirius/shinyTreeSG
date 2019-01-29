@@ -8598,5 +8598,4 @@
 			document.registerElement("vakata-jstree", { prototype: proto });
 		} catch (ignore) { }
 	}
-
 }));

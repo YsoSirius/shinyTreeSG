@@ -7419,20 +7419,20 @@
 		 * @name $.jstree.defaults.search.show_only_matches
 		 * @plugin search
 		 */
-		show_only_matches : false,
+		show_only_matches : true,
 		/**
 		 * Indicates if the children of matched element are shown (when show_only_matches is true)
 		 * This setting can be changed at runtime when calling the search method. Default is `false`.
 		 * @name $.jstree.defaults.search.show_only_matches_children
 		 * @plugin search
 		 */
-		show_only_matches_children : false,
+		show_only_matches_children : true,
 		/**
 		 * Indicates if all nodes opened to reveal the search result, should be closed when the search is cleared or a new search is performed. Default is `true`.
 		 * @name $.jstree.defaults.search.close_opened_onclear
 		 * @plugin search
 		 */
-		close_opened_onclear : true,
+		close_opened_onclear : false,
 		/**
 		 * Indicates if only leaf nodes should be included in search results. Default is `false`.
 		 * @name $.jstree.defaults.search.search_leaves_only

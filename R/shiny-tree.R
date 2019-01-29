@@ -41,6 +41,7 @@ shinyTree <- function(outputId, checkbox=F,
                         sort=F, unique=T, wholerow=T, searchtime=1000,
                         state = F, openAll=F, closeAll=F, toggleStripes=F,
                         toggleDots=F, toggleIcons=F){
+  
   searchEl <- shiny::div("")
   if (search == TRUE){
     search <- paste0(outputId, "-search-input")
@@ -167,7 +168,7 @@ shinyTree <- function(outputId, checkbox=F,
   # define theme tags (default, default-dark, or proton)
   theme.tags<-shiny::tags$link(rel = 'stylesheet',
                                type = 'text/css',
-                               href = paste('shinyTree/jsTree-3.3.7/themes/',theme,'/style.min.css',sep=""))
+                               href = paste('shinyTree/jsTree-3.3.6/themes/',theme,'/style.min.css',sep=""))
   
   if(!is.null(types)){
     types <- paste("sttypes =",types)
@@ -180,7 +181,7 @@ shinyTree <- function(outputId, checkbox=F,
       shiny::tags$link(rel = "stylesheet", 
                 type = "text/css", 
                 href = "shared/font-awesome/css/font-awesome.min.css"),
-      shiny::tags$script(src = 'shinyTree/jsTree-3.3.7/jstree.min.js'),
+      shiny::tags$script(src = 'shinyTree/jsTree-3.3.6/jstree.min.js'),
       shiny::tags$script(src = 'shinyTree/shinyTree.js'),
       shiny::tags$script(shiny::HTML(types))
     )),
