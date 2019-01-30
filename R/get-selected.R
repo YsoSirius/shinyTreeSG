@@ -38,14 +38,13 @@ get_selected_names3 = function(tree) {
 }
 get_selected_names4 = function(tree) {
   a <- unlist(lapply(tree, function(i) {
-    unlist(lapply(i, function(j) {
-      unlist(lapply(j, function(k) {
+    sapply(i, function(j) {
+      lapply(j, function(k) {
         attr(k, "stselected", TRUE)
-      }))
-    }))
+      })
+    }, USE.NAMES = F)
   }));
-  whna = which(sapply(names(tree), function(i) { grepl(pattern = i, x = names(a), fixed = TRUE)}))
-  names(whna)
+  names(a)
 }
 
 
