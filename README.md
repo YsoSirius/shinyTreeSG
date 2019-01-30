@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/shinyTree/shinyTree.svg?branch=master)](https://travis-ci.org/shinyTree/shinyTree)
+[![Build Status](https://travis-ci.org/trafficonese/shinyTreeSG.svg?branch=master)](https://travis-ci.org/trafficonese/shinyTreeSG)
 
 shinyTree
 ==========
