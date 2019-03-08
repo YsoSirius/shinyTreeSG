@@ -119,7 +119,6 @@ getJSON <- function(node){
   paste0("{",paste0(attrib, collapse = ","),"}")  
 }
 
-
 datatreeToTags <- function(datatreeNode, parent=shiny::tags$ul()){
   
   # Handle parent tag attributes
