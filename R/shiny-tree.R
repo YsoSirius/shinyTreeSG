@@ -181,7 +181,7 @@ shinyTree <- function(outputId, checkbox=F,
       shiny::tags$link(rel = "stylesheet", 
                 type = "text/css", 
                 href = "shared/font-awesome/css/font-awesome.min.css"),
-      shiny::tags$script(src = 'shinyTree/jsTree-3.3.7/jstree.min.js'),
+      shiny::tags$script(src = 'shinyTree/jsTree-3.3.7/jstree.js'),
       shiny::tags$script(src = 'shinyTree/shinyTree.js'),
       shiny::tags$script(shiny::HTML(types))
     )),

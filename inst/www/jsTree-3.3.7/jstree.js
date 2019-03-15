@@ -362,7 +362,7 @@
 		 * a boolean indicating if multiple nodes can be selected
 		 * @name $.jstree.defaults.core.multiple
 		 */
-		multiple		: true,
+		multiple		: false,
 		/**
 		 * theme configuration object
 		 * @name $.jstree.defaults.core.themes
@@ -423,7 +423,7 @@
 		 * if left as `true` web workers will be used to parse incoming JSON data where possible, so that the UI will not be blocked by large requests. Workers are however about 30% slower. Defaults to `true`
 		 * @name $.jstree.defaults.core.worker
 		 */
-		worker : true,
+		worker : false,
 		/**
 		 * Force node text to plain text (and escape HTML). Defaults to `false`
 		 * @name $.jstree.defaults.core.force_text
@@ -875,7 +875,7 @@
 				.on("init.jstree", $.proxy(function () {
 						var s = this.settings.core.themes;
 						this._data.core.themes.dots			= s.dots;
-						this._data.core.themes.stripes		= s.stripes;
+						this._data.core.themes.stripes		= true;
 						this._data.core.themes.icons		= s.icons;
 						this._data.core.themes.ellipsis		= s.ellipsis;
 						this.set_theme(s.name || "default", s.url);
