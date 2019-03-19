@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/trafficonese/shinyTreeSG.svg?branch=master)](https://travis-ci.org/trafficonese/shinyTreeSG)
+[![Build Status](https://travis-ci.org/shinyTree/shinyTree.svg?branch=master)](https://travis-ci.org/shinyTree/shinyTree)
 
 shinyTree
 ==========
@@ -134,26 +134,41 @@ runApp(system.file("examples/12-types", package="shinyTree"))
 
 An example demonstrating node types with custom icons.
 
-#### 13-datatree
+#### 13-icons
 
 ```
 library(shiny)
-runApp(system.file("examples/13-datatree", package="shinyTree"))
+runApp(system.file("examples/13-icons", package="shinyTree"))
 ```
 
-An example demonstrating how to import a datatree instead of a list.
+An example demonstrating various ways to use icons on nodes.
 
-
-#### 14-api
+#### 14-files
 
 ```
 library(shiny)
-runApp(system.file("examples/14-api", package="shinyTree"))
+runApp(system.file("examples/14-files", package="shinyTree"))
 ```
 
-An example demonstrating how to extend the operations on the tree to the rest of
-the [jsTree's core functionality](https://www.jstree.com/api/).
+Demonstrates how to create a file browser tree.
 
+#### 15-files
+
+```
+library(shiny)
+runApp(system.file("examples/15-data", package="shinyTree"))
+```
+
+Demonstrates how to attach and retreive metadata from a node.
+
+#### 16-async
+
+```
+library(shiny)
+runApp(system.file("examples/16-async", package="shinyTree"))
+```
+
+Demonstrates how to render a tree asynchronously.
 
 Known Bugs
 ----------

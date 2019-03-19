@@ -13,26 +13,14 @@ renderTree <- function(expr, env = parent.frame(), quoted = FALSE){
   func <- shiny::exprToFunction(expr, env, quoted)
   return(function(shinysession, name, ...) {
     tree <- func()
-    if(inherits(expr, "Node")){
-      shiny::HTML(as.character(datatreeToTags(tree)))
-    } else {
-      shiny::HTML(as.character(listToTags(tree)))
-    }
+    updateTree(shinysession,name,tree) 
+    NULL
   })
 }
-# renderTree <- function(expr, env = parent.frame(), quoted = FALSE){
-#   func <- shiny::exprToFunction(expr, env, quoted)
-#   return(function(shinysession, name, ...) {
-#     tree <- func()
-#     updateTree(shinysession,name,tree) 
-#     NULL
-#   })
-# }
 
 #' Render an empty ShinyTree
 #' 
 #' Renders a tree with no defined nodes.
-#' \code{\link{shinyTree}}.
 #'
 #' @seealso \code{\link{shinyTree}}
 #' @export

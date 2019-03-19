@@ -1,4 +1,8 @@
 .Rproj.user
 .Rhistory
 .RData
-.Ruserdata
+shinyapps/
+.DS_Store
+old/*
+inst/*
+inst/examples/*

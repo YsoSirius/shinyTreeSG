@@ -4,8 +4,7 @@
 \alias{updateTree}
 \title{Update the tree with new data}
 \usage{
-updateTree(session, treeId, data = NULL, skipload = TRUE,
-  fortgetstate = TRUE)
+updateTree(session, treeId, data = NULL)
 }
 \arguments{
 \item{session}{The current session variable.}
@@ -13,12 +12,6 @@ updateTree(session, treeId, data = NULL, skipload = TRUE,
 \item{treeId}{The identifier for the shinyTree object}
 
 \item{data}{JSON data or nested list representing the new tree structure.}
-
-\item{skipload}{an option to skip showing the loading indicator.}
-
-\item{fortgetstate}{If set to true state will not be reapplied, if set to 
-a function (receiving the current state as argument) the result of that
-function will be used as state.}
 }
 \description{
 Extract the nodes from the tree that are selected in a more
