@@ -11,12 +11,14 @@
 #' a function (receiving the current state as argument) the result of that
 #' function will be used as state.
 #' @export
-updateTree <- function(session, treeId, data=NULL, skipload=TRUE, fortgetstate=TRUE) {
+updateTree <- function(session, treeId, data=NULL, skipload=F, fortgetstate=T) {
   if(is.list(data)){
     data<-Rlist2json(data)
   }
   message <- list(type="updateTree",data=data, skipload=skipload, fortgetstate=fortgetstate)
   if(!is.null(message)) {
+    print(paste("Update: ", data))
+    # print(data)
     session$sendInputMessage(treeId, message)
   }
 }
@@ -39,6 +41,8 @@ get_flatList <- function(nestedList, flatList = NULL, parent = "#") {
     })
     names(additionalAttributes) <-  additionalAttributeNames
     additionalAttributes <- additionalAttributes[which(sapply(additionalAttributes,Negate(is.null)))]
+    # print("additionalAttributes")
+    # print(additionalAttributes)
 
     nodeData <- append(
       list(
@@ -52,6 +56,8 @@ get_flatList <- function(nestedList, flatList = NULL, parent = "#") {
       ),
       additionalAttributes
     )
+    print("nodeData")
+    print(nodeData)
 
     flatList = c(flatList,list(nodeData))
     if (is.list(nestedList[[name]]))

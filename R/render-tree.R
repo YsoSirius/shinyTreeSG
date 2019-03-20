@@ -16,6 +16,7 @@ renderTree <- function(expr, env = parent.frame(), quoted = FALSE){
     if(inherits(expr, "Node")){
       shiny::HTML(as.character(datatreeToTags(tree)))
     } else {
+      browser()
       shiny::HTML(as.character(listToTags(tree)))
     }
   })

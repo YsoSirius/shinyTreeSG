@@ -34,7 +34,7 @@ fixIconName <- function(icon){
 
 
 listToTags <- function(myList, parent=shiny::tags$ul()){
-  
+  browser()
   # Handle parent tag attributes
   el <- list(parent)
   if (!is.null(attr(myList, "stid"))){
@@ -61,21 +61,24 @@ listToTags <- function(myList, parent=shiny::tags$ul()){
     if (is.list(myList[[i]])){
       el <- list(name, listToTags(myList[[i]]), 
                  `data-jstree`=attribJSON)
+      
       if (!is.null(attr(myList[[i]], "stid"))){
         el[["stid"]] <- attr(myList[[i]], "stid")
       }
-      if (!is.null(attr(myList[[i]], "stclass"))){
-        el[["stclass"]] <- attr(myList[[i]], "stclass")
-      }
+      # if (!is.null(attr(myList[[i]], "stclass"))){
+        el[["class"]] <- attr(myList[[i]], "stclass")
+      # }
       parent <- shiny::tagAppendChild(parent, do.call(shiny::tags$li, el))
-    } else{
+      
+    } else {
       el <- list(name, `data-jstree`=attribJSON)
+      
       if (!is.null(attr(myList[[i]], "stid"))){
         el[["stid"]] <- attr(myList[[i]], "stid")
       }
-      if (!is.null(attr(myList[[i]], "stclass"))){
-        el[["stclass"]] <- attr(myList[[i]], "stclass")
-      }
+      # if (!is.null(attr(myList[[i]], "stclass"))){
+        el[["class"]] <- attr(myList[[i]], "stclass")
+      # }
       parent <- shiny::tagAppendChild(parent, do.call(shiny::tags$li, el))
     }
   }
@@ -117,7 +120,7 @@ getJSON <- function(node){
   
   # Handle 'class' attribute
   class <- attr(node, "stclass")
-  if (!is.null(type)){
+  if (!is.null(class)){
     attrib <- c(attrib, paste0("\"class\": \"", class, "\""))
   }
   
