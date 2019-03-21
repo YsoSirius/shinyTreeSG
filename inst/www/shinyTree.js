@@ -1,1 +1,210 @@
-var shinyTree=function(){callbackCounter=0,sttypes=null;var e=new Shiny.OutputBinding;$.extend(e,{find:function(e){return $(e).find(".shiny-tree")},renderValue:function(e,t){$elem=$("#"+e.id),$elem.jstree("destroy"),$elem.html(t);var n=[];"TRUE"===$elem.data("st-checkbox")&&n.push("checkbox"),"TRUE"===$elem.data("st-search")&&n.push("search"),"TRUE"===$elem.data("st-dnd")&&n.push("dnd"),"TRUE"===$elem.data("st-types")&&n.push("types");$(e).jstree({core:{check_callback:"TRUE"===$elem.data("st-dnd"),themes:{name:$elem.data("st-theme"),responsive:!0,icons:"TRUE"===$elem.data("st-theme-icons"),dots:"TRUE"===$elem.data("st-theme-dots")}},types:sttypes,plugins:n})}}),Shiny.outputBindings.register(e,"shinyTree.treeOutput");var t=new Shiny.InputBinding;$.extend(t,{find:function(e){return $(e).find(".shiny-tree")},getType:function(){return"shinyTree"},getValue:function(e,t){var n=function(e,t){var r=function(e){var t={};return $.each(e,function(e,n){var r={};$.each($("#tree").jstree(!0).get_node(n.id).data,function(e,t){r[e]="string"==typeof t?t.trim():t}),n.data=r,t[""+e]=n}),t},i=[];return $.each(e,function(e,s){s.children&&s.children.length>0&&(s.children=r(n(s.children,t)));var a={};$.each(s,function(e,n){t.indexOf(e)>=0&&(a[e]="string"==typeof n?n.trim():n)}),i.push(a)}),result=r(i),r(result)},r=$.jstree.reference(e);if(r&&r.get_container().find("li").length>0){var i=r.get_json(),s=n(i,["id","state","text","children"]);return callbackCounter++,s.callbackCounter=callbackCounter,s}},setValue:function(e,t){},subscribe:function(e,t){$(e).on("open_node.jstree",function(e){t()}),$(e).on("close_node.jstree",function(e){t()}),$(e).on("changed.jstree",function(e){t()}),$(e).on("ready.jstree",function(e){t()}),$(e).on("move_node.jstree",function(e){t()})},unsubscribe:function(e){$(e).off(".jstree")},receiveMessage:function(e,t){"updateTree"==t.type&&void 0!==t.data&&($(e).jstree(!0).settings.core.data=JSON.parse(t.data),$(e).jstree(!0).refresh(!0,!0))}}),Shiny.inputBindings.register(t);var n={initSearch:function(e,t){$(function(){var n=!1;$("#"+t).keyup(function(){n&&clearTimeout(n),n=setTimeout(function(){var n=$("#"+t).val();$.jstree.reference("#"+e).search(n)},250)})})}};return n}();
+var shinyTree = function(){
+  callbackCounter = 0;
+  sttypes = null;
+
+  var treeOutput = new Shiny.OutputBinding();
+  $.extend(treeOutput, {
+    find: function(scope) {
+      return $(scope).find('.shiny-tree');
+    },
+    renderValue: function(el, data) {
+      // Wipe the existing tree and create a new one.
+      $elem = $('#' + el.id);
+      
+      $elem.jstree('destroy');
+      
+      $elem.html(data);
+      var plugins = [];
+      if ($elem.data('st-checkbox') === 'TRUE'){
+        plugins.push('checkbox');
+      }
+      if ($elem.data('st-search') === 'TRUE'){
+        plugins.push('search');
+      }      
+      if ($elem.data('st-dnd') === 'TRUE'){
+        plugins.push('dnd');
+      }
+      if ($elem.data('st-types') === 'TRUE'){
+        plugins.push('types');
+      }
+      if ($elem.data('st-contextmenu') === 'TRUE'){
+        plugins.push('contextmenu');
+      }
+      if ($elem.data('st-state') === 'TRUE'){
+        plugins.push('state');
+      }
+      if ($elem.data('st-unique') === 'TRUE'){
+        plugins.push('unique');
+      }
+      if ($elem.data('st-sort') === 'TRUE'){
+        plugins.push('sort');
+      }
+      if ($elem.data('st-wholerow') === 'TRUE'){
+        plugins.push('wholerow');
+      }
+      
+      var tree = $(el).jstree({'core' : {
+        "check_callback" : ($elem.data('st-dnd') === 'TRUE'), 
+        'themes': {'name': $elem.data('st-theme'), 'responsive': true, 'icons': ($elem.data('st-theme-icons') === 'TRUE'), 'dots': ($elem.data('st-theme-dots') === 'TRUE') },
+        "state" : { "key" : "jstree" },
+          },
+          "types" : sttypes,
+          plugins: plugins});
+    }
+  });
+  Shiny.outputBindings.register(treeOutput, 'shinyTree.treeOutput');
+  
+  var treeInput = new Shiny.InputBinding();
+  $.extend(treeInput, {
+    find: function(scope) {
+      return $(scope).find(".shiny-tree");
+    },
+    getType: function(){
+      return "shinyTree";
+    },
+    getValue: function(el, keys) {
+      /**
+       * Prune an object recursively to only include the specified keys.
+       * 'li_attr' is a special key that will actually map to 'li_attrs.class' and
+       * will be called 'class' in the output.
+       **/
+      var prune = function(arr, keys){
+        var arrToObj = function(ar){
+          var obj = {};
+          $.each(ar, function(i, el){
+            obj['' + i] = el;
+          });
+          return obj;
+        };
+        
+        var toReturn = [];
+        // Ensure 'children' property is retained.
+        keys.push('children');
+        
+        $.each(arr, function(i, obj){
+          if (obj.children && obj.children.length > 0){
+            obj.children = arrToObj(prune(obj.children, keys));
+          }
+          var clean = {};
+          
+          $.each(obj, function(key, val){
+            if (keys.indexOf(key) >= 0) {
+              //console.log(key + ": " + val)
+              
+              if (key === 'li_attr') { // We don't really want, just the stid and class attr
+                if (val.stid){
+                  //console.log("stid (li_attr): " + val.stid)
+                  if (typeof val.stid === 'string'){
+                    // TODO: We don't really want to trim but have to b/c of Shiny's pretty-printing
+                    clean["stid"] = val.stid.trim();
+                  } else {
+                    clean["stid"] = val.stid; 
+                  }
+                }
+                
+                if (val.class) {
+                  //console.log("stclass (li_attr): " + val.class)
+                  if (typeof val.class === 'string'){
+                    // TODO: We don't really want to trim but have to b/c of Shiny's pretty-printing
+                    clean["stclass"] = val.class.trim();
+                  } else {
+                    clean["stclass"] = val.class; 
+                  }
+                }
+                
+                //if (!val.class){
+                //  console.log(key + ": " + val)
+                //  // Skip without adding element.
+                //  return;
+                //}
+                
+                //if (val.class){
+                //  val = val.class;
+                //  key = 'class';
+                //}
+              } else {
+              
+                if (typeof val === 'string'){
+                  // TODO: We don't really want to trim but have to b/c of Shiny's pretty-printing.
+                  clean[key] = val.trim();
+                } else {
+                  clean[key] = val; 
+                }
+              }
+            }
+          });
+          
+          toReturn.push(clean);
+        });
+        return arrToObj(toReturn);
+      };
+      
+      var tree = $.jstree.reference(el);
+      if (tree) { // May not be loaded yet.
+        if(tree.get_container().find("li").length>0) { // The tree may be initialized but empty
+          var js = tree.get_json();
+          var pruned =  prune(js, ['id', 'state', 'text', 'li_attr']);
+          callbackCounter++;
+          pruned.callbackCounter = callbackCounter;
+          return pruned;
+        }
+      }
+    },
+    setValue: function(el, value) {},
+    subscribe: function(el, callback) {
+      $(el).on("close_node.jstree", function(e) {
+        callback();
+      });
+      $(el).on("set_state.jstree", function(e) {
+        callback();
+      });      
+      $(el).on("open_node.jstree", function(e) {
+        callback();
+      });
+      $(el).on("changed.jstree", function(e) {
+        callback();
+      });
+      $(el).on("ready.jstree", function(e){
+        callback();
+      });
+      $(el).on("move_node.jstree", function(e){
+        callback();
+      });
+      $(el).on("search.jstree", function(e){
+        callback();
+      });
+      $(el).on("clear_search.jstree", function(e){
+        callback();
+      });    
+    },
+    unsubscribe: function(el) {
+      $(el).off(".jstree");
+    },
+    receiveMessage: function(el, message) {
+      // This receives messages of type "updateTree" from the server.
+      if(message.type == 'updateTree' && typeof message.data !== 'undefined') {
+          $(el).jstree(true).settings.core.data = JSON.parse(message.data);
+          $(el).jstree(true).refresh(message.skipload, message.fortgetstate);
+          //$(el).jstree(true).refresh(true, false);
+      }
+    }
+  });
+  Shiny.inputBindings.register(treeInput); 
+  
+  var exports = {};
+  
+  exports.initSearch = function(treeId, searchId, searchtime){
+    $(function(){
+      var to = false;
+      $('#' + searchId).keyup(function () {
+        if(to) { clearTimeout(to); }
+        to = setTimeout(function () {
+          var v = $('#' + searchId).val();
+          $.jstree.reference('#' + treeId).search(v);
+        }, searchtime);
+      });
+    });    
+  };
+  
+  return exports;
+}();

@@ -17,6 +17,14 @@ renderTree <- function(expr, env = parent.frame(), quoted = FALSE){
     NULL
   })
 }
+# renderTree <- function(expr, env = parent.frame(), quoted = FALSE){
+#   func <- shiny::exprToFunction(expr, env, quoted)
+#   return(function(shinysession, name, ...) {
+#     tree <- func()
+#     updateTree(shinysession,name,tree) 
+#     NULL
+#   })
+# }
 
 #' Render an empty ShinyTree
 #' 

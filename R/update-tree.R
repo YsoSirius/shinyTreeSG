@@ -6,10 +6,14 @@
 #' @param session The current session variable.
 #' @param treeId The identifier for the shinyTree object
 #' @param data JSON data or nested list representing the new tree structure.
+#' @param skipload an option to skip showing the loading indicator.
+#' @param fortgetstate If set to true state will not be reapplied, if set to 
+#' a function (receiving the current state as argument) the result of that
+#' function will be used as state.
 #' @export
-updateTree <- function(session, treeId, data=NULL) {
+updateTree <- function(session, treeId, data=NULL, skipload = TRUE, fortgetstate = FALSE) {
   data <- Rlist2json(data)
-  message <- list(type="updateTree",data=data)
+  message <- list(type="updateTree",data=data, skipload=skipload, fortgetstate=fortgetstate)
   session$sendInputMessage(treeId, message)
 }
 
@@ -29,7 +33,7 @@ get_flatList <- function(nestedList, flatList = NULL, parent = "#") {
     additionalAttributes <- additionalAttributes[!unlist(lapply(additionalAttributes,is.null))]
 
     data <- lapply(names(attributes(nestedList[[name]])), function(key){
-      if (key %in% c("icon","type","names","stopened","stselected","sttype")){
+      if (key %in% c("icon","type","names","stopened","stselected","sttype")) {
         NULL
       }else{
         attr(nestedList[[name]],key)
@@ -57,7 +61,7 @@ get_flatList <- function(nestedList, flatList = NULL, parent = "#") {
     flatList = c(flatList,list(nodeData))
     if (is.list(nestedList[[name]])) {
       flatList = get_flatList(nestedList[[name]], flatList, parent = as.character(length(flatList)))
-    }
+      }
   }
   flatList
 }

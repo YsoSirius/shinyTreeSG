@@ -8,15 +8,39 @@
 #' @param search If \code{TRUE}, will enable search functionality in the tree by adding
 #' a search box above the produced tree. Alternatively, you can set the parameter
 #' to the ID of the text input you wish to use as the search field.
+#' @param searchtime Determines the reaction time of the search algorithm. Default is 1000ms.
 #' @param dragAndDrop If \code{TRUE}, will allow the user to rearrange the nodes in the
 #' tree.
 #' @param types enables jstree types functionality when sent proper json (please see the types example)
 #' @param theme jsTree theme, one of \code{default}, \code{default-dark}, or \code{proton}.
 #' @param themeIcons If \code{TRUE}, will show theme icons for each item.
 #' @param themeDots If \code{TRUE}, will include level dots.
+#' @param sort If \code{TRUE}, will sort the nodes in alphabetical/numerical order.
+#' @param unique If \code{TRUE}, will ensure that no node name exists more than once.
+#' @param wholerow If \code{TRUE}, will highlight the whole selected row.
+#' @param state If \code{TRUE}, will enable the state plugin and will store the tree nodes in the 
+#' browser, so opened and selected nodes will remain after a page refresh. The key used is 'jstree'
+#' @param contextmenu If \code{TRUE}, will enable a contextmenu.
+#' @param openAll Activates a button to open all nodes if \code{TRUE}. Can be a list with
+#' \emph{id}, \emph{class}, \emph{label} for the button. \code{FALSE} or \code{NULL} will deactivate
+#' the button.
+#' @param closeAll Activates a button to close all opened nodes if \code{TRUE}. Can be a list with
+#' \emph{id}, \emph{class}, \emph{label}, \emph{icon} for the button.
+#' @param toggleStripes Activates a button to toggle stripes if \code{TRUE}. Can be a list with
+#' \emph{id}, \emph{class}, \emph{label}, \emph{icon} for the button.
+#' @param toggleDots Activates a button to toggle the dots if \code{TRUE}. Can be a list with
+#' \emph{id}, \emph{class}, \emph{label}, \emph{icon} for the button. 
+#' @param toggleIcons Activates a button to toggle the icons if \code{TRUE}. Can be a list with
+#' \emph{id}, \emph{class}, \emph{label}, \emph{icon} for the button. 
 #' @seealso \code{\link{renderTree}}
 #' @export
-shinyTree <- function(outputId, checkbox=FALSE, search=FALSE, dragAndDrop=FALSE, types=NULL,theme="default", themeIcons=TRUE, themeDots=TRUE){
+shinyTree <- function(outputId, checkbox=F, 
+                        search=F, dragAndDrop=F, 
+                        types=NULL, theme="default", themeIcons=T, 
+                        themeDots=T, contextmenu=F,
+                        sort=F, unique=T, wholerow=T, searchtime=1000,
+                        state = F, openAll=F, closeAll=F, toggleStripes=F,
+                        toggleDots=F, toggleIcons=F){
   searchEl <- shiny::div("")
   if (search == TRUE){
     search <- paste0(outputId, "-search-input")
@@ -25,9 +49,11 @@ shinyTree <- function(outputId, checkbox=FALSE, search=FALSE, dragAndDrop=FALSE,
   if (is.character(search)){
     # Either the search field we just created or the given text field ID
     searchEl <- shiny::tagAppendChild(searchEl, shiny::tags$script(type="text/javascript", shiny::HTML(
-      paste0("shinyTree.initSearch('",outputId,"','",search,"');"))))
+      paste0("shinyTree.initSearch('",outputId,"','",search,"', ", searchtime,");")
+      )))
   }
   
+
   if(!theme %in% c("default","default-dark","proton")) { stop(paste("shinyTree theme, ",theme,", doesn't exist!",sep="")) }
   
   # define theme tags (default, default-dark, or proton)
@@ -35,16 +61,17 @@ shinyTree <- function(outputId, checkbox=FALSE, search=FALSE, dragAndDrop=FALSE,
                                type = 'text/css',
                                href = paste('shinyTree/jsTree-3.3.7/themes/',theme,'/style.min.css',sep=""))
   
-  
   if(!is.null(types)){
     types <- paste("sttypes =",types)
   }
+
   shiny::tagList(
     shiny::singleton(shiny::tags$head(
       initResourcePaths(),
       theme.tags,
       shiny::tags$link(rel = "stylesheet", 
                 type = "text/css", 
+                # href = "shared/font-awesome/css/font-awesome.min.css"),
                 href="https://use.fontawesome.com/releases/v5.7.2/css/all.css",
                 integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr",
                 crossorigin="anonymous"),
@@ -60,7 +87,12 @@ shinyTree <- function(outputId, checkbox=FALSE, search=FALSE, dragAndDrop=FALSE,
         `data-st-types`=!is.null(types),
         `data-st-theme`=theme,
         `data-st-theme-icons`=themeIcons,
-        `data-st-theme-dots`=themeDots
+        `data-st-theme-dots`=themeDots,
+        `data-st-contextmenu`=contextmenu,
+        `data-st-sort`=sort,
+        `data-st-unique`=unique,
+        `data-st-wholerow`=wholerow,
+        `data-st-state`=state
         )
   )
 }
