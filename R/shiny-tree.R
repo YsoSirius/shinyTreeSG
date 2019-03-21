@@ -53,115 +53,7 @@ shinyTree <- function(outputId, checkbox=F,
       )))
   }
   
-  btn0 = btn1 = btn2 = btn3 = btn4 = NULL;
-  extraBtns = list(openAll, closeAll, toggleStripes, toggleDots, toggleIcons)
-  names(extraBtns) <- c("openAll", "closeAll", "toggleStripes", "toggleDots", "toggleIcons")
-  if (any(unlist(lapply(extraBtns, is.logical)))){
-    ind = which(unlist(lapply(extraBtns, is.logical)))
-    extraBtns[ind] = lapply(extraBtns[ind], FUN = function(x) { 
-      if (x) list(id=NULL, class=NULL, label=NULL, icon=NULL) else F })
-  }
-  
-  ## use fixIconName ???
-  ## more actions
-  ## combine t dropdown menue?
-  if (is.list(extraBtns[[1]])) {
-    openAll <- extraBtns$openAll
-    if (is.null(openAll$id)) {
-      openAll$id="open_tree"
-    }
-    if (is.null(openAll$class)) {
-      openAll$class="btn btn-default"
-    }
-    if (is.null(openAll$label)) {
-      openAll$label="Open all"
-    }
-    if (is.null(openAll$icon)) {
-      openAll$icon="folder-open"
-    }  
-    tmp = shiny::HTML(paste0('$("#', outputId,'").jstree("open_all");'))
-    btn = shiny::tags$button(id=openAll$id, class=openAll$class, type="button", onclick=tmp)
-    btn = shiny::tagAppendChild(btn, shiny::icon(openAll$icon))
-    btn0 = shiny::tagAppendChild(btn, openAll$label)
-  }
-  if (is.list(extraBtns[[2]])) {
-    closeAll <- extraBtns$closeAll
-    if (is.null(closeAll$id)) {
-      closeAll$id="close_tree"
-    }
-    if (is.null(closeAll$class)) {
-      closeAll$class="btn btn-default"
-    }
-    if (is.null(closeAll$label)) {
-      closeAll$label="Close all"
-    }
-    if (is.null(closeAll$icon)) {
-      closeAll$icon="folder"
-    }  
-    tmp = shiny::HTML(paste0('$("#', outputId,'").jstree("close_all");'))
-    btn = shiny::tags$button(id=closeAll$id, class=closeAll$class, type="button", onclick=tmp)
-    btn = shiny::tagAppendChild(btn, shiny::icon(closeAll$icon))
-    btn1 = shiny::tagAppendChild(btn, closeAll$label)
-  }
-  if (is.list(extraBtns[[3]])) {
-    toggleStripes <- extraBtns$toggleStripes
-    if (is.null(toggleStripes$id)) {
-      toggleStripes$id="toggle_stripes"
-    }
-    if (is.null(toggleStripes$class)) {
-      toggleStripes$class="btn btn-default"
-    }
-    if (is.null(toggleStripes$label)) {
-      toggleStripes$label="Toggle Stripes"
-    }
-    if (is.null(toggleStripes$icon)) {
-      toggleStripes$icon="align-justify"
-    }  
-    tmp = shiny::HTML(paste0('$("#', outputId,'").jstree("toggle_stripes");'))
-    btn = shiny::tags$button(id=toggleStripes$id, class=toggleStripes$class, type="button", onclick=tmp)
-    btn = shiny::tagAppendChild(btn, shiny::icon(toggleStripes$icon))
-    btn2 = shiny::tagAppendChild(btn, toggleStripes$label)
-  }
-  if (is.list(extraBtns[[4]])) {
-    toggleDots <- extraBtns$toggleDots
-    if (is.null(toggleDots$id)) {
-      toggleDots$id="toggle_dots"
-    }
-    if (is.null(toggleDots$class)) {
-      toggleDots$class="btn btn-default"
-    }
-    if (is.null(toggleDots$label)) {
-      toggleDots$label="Toggle Dots"
-    }
-    if (is.null(toggleDots$icon)) {
-      toggleDots$icon="ellipsis-v"
-    }  
-    tmp = shiny::HTML(paste0('$("#', outputId,'").jstree("toggle_dots");'))
-    btn = shiny::tags$button(id=toggleDots$id, class=toggleDots$class, type="button", onclick=tmp)
-    btn = shiny::tagAppendChild(btn, shiny::icon(toggleDots$icon))
-    btn3 = shiny::tagAppendChild(btn, toggleDots$label)
-  }
-  if (is.list(extraBtns[[5]])) {
-    toggleIcons <- extraBtns$toggleIcons
-    if (is.null(toggleIcons$id)) {
-      toggleIcons$id="toggle_icons"
-    }
-    if (is.null(toggleIcons$class)) {
-      toggleIcons$class="btn btn-default"
-    }
-    if (is.null(toggleIcons$label)) {
-      toggleIcons$label="Toggle Icons"
-    }
-    if (is.null(toggleIcons$icon)) {
-      toggleIcons$icon="ellipsis-v"
-    }  
-    tmp = shiny::HTML(paste0('$("#', outputId,'").jstree("toggle_icons");'))
-    btn = shiny::tags$button(id=toggleIcons$id, class=toggleIcons$class, type="button", onclick=tmp)
-    btn = shiny::tagAppendChild(btn, shiny::icon(toggleIcons$icon))
-    btn4 = shiny::tagAppendChild(btn, toggleIcons$label)
-  }
 
-  
   if(!theme %in% c("default","default-dark","proton")) { stop(paste("shinyTree theme, ",theme,", doesn't exist!",sep="")) }
   
   # define theme tags (default, default-dark, or proton)
@@ -179,17 +71,15 @@ shinyTree <- function(outputId, checkbox=F,
       theme.tags,
       shiny::tags$link(rel = "stylesheet", 
                 type = "text/css", 
-                href = "shared/font-awesome/css/font-awesome.min.css"),
+                # href = "shared/font-awesome/css/font-awesome.min.css"),
+                href="https://use.fontawesome.com/releases/v5.7.2/css/all.css",
+                integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr",
+                crossorigin="anonymous"),
       shiny::tags$script(src = 'shinyTree/jsTree-3.3.7/jstree.min.js'),
       shiny::tags$script(src = 'shinyTree/shinyTree.js'),
       shiny::tags$script(shiny::HTML(types))
     )),
     searchEl,
-    btn0,
-    btn1,
-    btn2,
-    btn3,
-    btn4,
     shiny::div(id=outputId, class="shiny-tree", 
         `data-st-checkbox`=checkbox, 
         `data-st-search`=is.character(search),

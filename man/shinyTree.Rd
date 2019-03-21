@@ -6,8 +6,8 @@
 \usage{
 shinyTree(outputId, checkbox = F, search = F, dragAndDrop = F,
   types = NULL, theme = "default", themeIcons = T, themeDots = T,
-  contextmenu = T, sort = T, unique = T, wholerow = T,
-  searchtime = 1000, state = T, openAll = F, closeAll = F,
+  contextmenu = F, sort = F, unique = T, wholerow = T,
+  searchtime = 1000, state = F, openAll = F, closeAll = F,
   toggleStripes = F, toggleDots = F, toggleIcons = F)
 }
 \arguments{
