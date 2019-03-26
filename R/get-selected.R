@@ -10,7 +10,6 @@
 #' describing the node's ancestry), or \code{slices} to get a list
 #' of lists, each of which is a slice of the list used to get down
 #' to the selected node. 
-#' @importFrom utils tail head
 #' @export
 get_selected <- function(tree, format=c("names","names2","names3","names4", "slices", "classid")){
   format <- match.arg(format, c("names", "names2","names3", "names4", "slices", "classid"), FALSE)
@@ -107,7 +106,7 @@ get_selected_classid <- function(tree, ancestry=NULL, vec=list()){
     a <- attr(tree, "stselected", TRUE)
     if (!is.null(a) && a == TRUE){
       # Get the element name
-      el <- tail(ancestry,n=1)
+      el <- ancestry[length(ancestry)]
       vec[length(vec)+1] <- el
       attr(vec[[length(vec)]], "stclass") <- attr(tree, "stclass", TRUE)
       attr(vec[[length(vec)]], "stid") <- attr(tree, "stid", TRUE)
