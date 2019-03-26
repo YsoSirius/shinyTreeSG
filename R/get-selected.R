@@ -24,7 +24,6 @@ get_selected <- function(tree, format=c("names","names2","names3","names4", "sli
          )  
 }
 
-#' @importFrom utils head tail
 get_selected_names2 = function(tree) {
   names(unlist(lapply(tree, function(i) attr(i, "stselected", TRUE))))
 }
@@ -48,7 +47,6 @@ get_selected_names4 = function(tree) {
   names(a)
 }
 
-#' @importFrom utils head tail
 get_selected_names <- function(tree, ancestry=NULL, vec=list()){
   if (is.list(tree)){
     for (i in 1:length(tree)){
@@ -60,14 +58,15 @@ get_selected_names <- function(tree, ancestry=NULL, vec=list()){
   a <- attr(tree, "stselected", TRUE)
   if (!is.null(a) && a == TRUE){
     # Get the element name
-    el <- tail(ancestry,n=1)
+    leAn <- length(ancestry)
+    el <- ancestry[leAn]
     vec[length(vec)+1] <- el
-    attr(vec[[length(vec)]], "ancestry") <- head(ancestry, n=length(ancestry)-1)
+    attr(vec[[length(vec)]], "ancestry") <- ancestry[1:leAn-1]
     #save attributes that start with "st" (ShinyTree)
     lapply(names(attributes(tree)),function(attribute){
-        if(grepl("^st",attribute)){
-            attr(vec[[length(vec)]], attribute) <<- attr(tree,attribute)
-        }
+      if(grepl("^st",attribute)){
+        attr(vec[[length(vec)]], attribute) <<- attr(tree,attribute)
+      }
     })
   }
   return(vec)
