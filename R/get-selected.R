@@ -12,38 +12,12 @@
 #' to the selected node. 
 #' @export
 get_selected <- function(tree, format=c("names","names2","names3","names4", "slices", "classid")){
-  format <- match.arg(format, c("names", "names2","names3", "names4", "slices", "classid"), FALSE)
+  format <- match.arg(format, c("names", "slices", "classid"), FALSE)
   switch(format,
          "names"=get_selected_names(tree),
-         "names2"=get_selected_names2(tree),
-         "names3"=get_selected_names3(tree),
-         "names4"=get_selected_names4(tree),
          "slices"=get_selected_slices(tree),
          "classid"=get_selected_classid(tree)
          )  
-}
-
-get_selected_names2 = function(tree) {
-  names(unlist(lapply(tree, function(i) attr(i, "stselected", TRUE))))
-}
-get_selected_names3 = function(tree) {
-  a <- unlist(lapply(tree, function(i) {
-    lapply(i, function(j) {
-      attr(j, "stselected", TRUE)
-    })
-  }));
-  whna = which(sapply(names(tree), function(i) { grepl(pattern = i, x = names(a), fixed = TRUE)}))
-  names(whna)
-}
-get_selected_names4 = function(tree) {
-  a <- unlist(lapply(tree, function(i) {
-    sapply(i, function(j) {
-      lapply(j, function(k) {
-        attr(k, "stselected", TRUE)
-      })
-    }, USE.NAMES = F)
-  }));
-  names(a)
 }
 
 get_selected_names <- function(tree, ancestry=NULL, vec=list()){
@@ -72,7 +46,6 @@ get_selected_names <- function(tree, ancestry=NULL, vec=list()){
 }
 
 get_selected_slices <- function(tree, ancestry=NULL, vec=list()){
-  
   if (is.list(tree)){
     for (i in 1:length(tree)){
       anc <- c(ancestry, names(tree)[i])

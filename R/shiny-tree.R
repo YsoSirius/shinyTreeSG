@@ -21,17 +21,6 @@
 #' @param state If \code{TRUE}, will enable the state plugin and will store the tree nodes in the 
 #' browser, so opened and selected nodes will remain after a page refresh. The key used is 'jstree'
 #' @param contextmenu If \code{TRUE}, will enable a contextmenu.
-#' @param openAll Activates a button to open all nodes if \code{TRUE}. Can be a list with
-#' \emph{id}, \emph{class}, \emph{label} for the button. \code{FALSE} or \code{NULL} will deactivate
-#' the button.
-#' @param closeAll Activates a button to close all opened nodes if \code{TRUE}. Can be a list with
-#' \emph{id}, \emph{class}, \emph{label}, \emph{icon} for the button.
-#' @param toggleStripes Activates a button to toggle stripes if \code{TRUE}. Can be a list with
-#' \emph{id}, \emph{class}, \emph{label}, \emph{icon} for the button.
-#' @param toggleDots Activates a button to toggle the dots if \code{TRUE}. Can be a list with
-#' \emph{id}, \emph{class}, \emph{label}, \emph{icon} for the button. 
-#' @param toggleIcons Activates a button to toggle the icons if \code{TRUE}. Can be a list with
-#' \emph{id}, \emph{class}, \emph{label}, \emph{icon} for the button. 
 #' @seealso \code{\link{renderTree}}
 #' @export
 shinyTree <- function(outputId, checkbox=F, 
@@ -39,8 +28,7 @@ shinyTree <- function(outputId, checkbox=F,
                         types=NULL, theme="default", themeIcons=T, 
                         themeDots=T, contextmenu=F,
                         sort=F, unique=T, wholerow=T, searchtime=1000,
-                        state = F, openAll=F, closeAll=F, toggleStripes=F,
-                        toggleDots=F, toggleIcons=F){
+                        state = F){
   searchEl <- shiny::div("")
   if (search == TRUE){
     search <- paste0(outputId, "-search-input")
@@ -52,9 +40,6 @@ shinyTree <- function(outputId, checkbox=F,
       paste0("shinyTree.initSearch('",outputId,"','",search,"', ", searchtime,");")
       )))
   }
-  
-
-  if(!theme %in% c("default","default-dark","proton")) { stop(paste("shinyTree theme, ",theme,", doesn't exist!",sep="")) }
   
   # define theme tags (default, default-dark, or proton)
   theme.tags<-shiny::tags$link(rel = 'stylesheet',
@@ -75,7 +60,7 @@ shinyTree <- function(outputId, checkbox=F,
                 href="https://use.fontawesome.com/releases/v5.7.2/css/all.css",
                 integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr",
                 crossorigin="anonymous"),
-      shiny::tags$script(src = 'shinyTree/jsTree-3.3.7/jstree.min.js'),
+      shiny::tags$script(src = 'shinyTree/jsTree-3.3.7/jstree.js'),
       shiny::tags$script(src = 'shinyTree/shinyTree.js'),
       shiny::tags$script(shiny::HTML(types))
     )),

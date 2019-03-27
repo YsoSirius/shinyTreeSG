@@ -165,7 +165,7 @@
 			ellipsis		: false,
 			stripes			: true,
 			variant			: false,
-			responsive		: false
+			responsive		: true
 		},
 		expand_selected_onload : true,
 		worker : false,
@@ -232,11 +232,6 @@
 				// end
 				e.preventDefault();
 				this.element.find('.jstree-anchor').filter(':visible').last().focus();
-			},
-			'f2': function (e) {
-				// f2 - safe to include - if check_callback is false it will fail
-				e.preventDefault();
-				this.edit(e.currentTarget);
 			}
 		}
 	};
