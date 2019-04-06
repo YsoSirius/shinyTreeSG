@@ -19,11 +19,44 @@ updateTree <- function(session, treeId, data=NULL, skipload = TRUE, fortgetstate
 
 #' @importFrom rjson toJSON
 Rlist2json <- function(nestedList) {
-  d <- as.character(toJSON(get_flatList(nestedList)))
+  d <- toJSON(get_flatList(nestedList))
   gsub(d, pattern = "null", fixed = TRUE, replacement = "{}")
 }
 
-get_flatList <- function(nestedList, flatList = NULL, parent = "#") {
+get_flatList <- function(nstl, fl = NULL, pr = "#") {
+  for (name in names(nstl)) {
+    nstnm <- nstl[[name]]
+    
+    typ = attr(nstnm,"sttype")
+    ico = attr(nstnm,"sticon")
+    if (is.null(typ)) {
+      adatr <- list("icon" = ico)
+    } else {
+      adatr <- list("icon" = ico,"type" = typ)
+    }
+
+    len = as.character(length(fl) + 1)
+    nd <- c(list(
+      id = len,
+      text = name,
+      parent = pr,
+      state = list(
+        opened   = isTRUE(attr(nstnm, "stopened")),
+        selected = isTRUE(attr(nstnm, "stselected"))
+      )
+    ),
+    adatr
+    )
+    
+    fl = c(fl,list(nd))
+    if (is.list(nstnm)) {
+      fl = get_flatList(nstnm, fl, pr=len)
+    }
+  }
+  fl
+}
+
+get_flatList_old <- function(nestedList, flatList = NULL, parent = "#") {
   for (name in names(nestedList)) {
     additionalAttributes <- list(
       "icon" = attr(nestedList[[name]],"sticon"),
@@ -60,7 +93,8 @@ get_flatList <- function(nestedList, flatList = NULL, parent = "#") {
 
     flatList = c(flatList,list(nodeData))
     if (is.list(nestedList[[name]])) {
-      flatList = get_flatList(nestedList[[name]], flatList, parent = as.character(length(flatList)))
+      flatList = get_flatList_old(nestedList[[name]], 
+                                  flatList, parent = as.character(length(flatList)))
       }
   }
   flatList
