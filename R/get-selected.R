@@ -11,7 +11,7 @@
 #' of lists, each of which is a slice of the list used to get down
 #' to the selected node. 
 #' @export
-get_selected <- function(tree, format=c("names","names2","names3","names4", "slices", "classid")){
+get_selected <- function(tree, format=c("names","slices", "classid")){
   format <- match.arg(format, c("names", "slices", "classid"), FALSE)
   switch(format,
          "names"=get_selected_names(tree),

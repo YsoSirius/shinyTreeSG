@@ -23,46 +23,35 @@ Rlist2json <- function(nestedList) {
   gsub(d, pattern = "null", fixed = TRUE, replacement = "{}")
 }
 
-get_flatList <- function(nestedList, flatList = NULL, parent = "#") {
-  for (name in names(nestedList)) {
-    additionalAttributes <- list(
-      "icon" = attr(nestedList[[name]],"sticon"),
-      "type" = attr(nestedList[[name]],"sttype")
-    )
-
-    additionalAttributes <- additionalAttributes[!unlist(lapply(additionalAttributes,is.null))]
-
-    data <- lapply(names(attributes(nestedList[[name]])), function(key){
-      if (key %in% c("icon","type","names","stopened","stselected","sttype")) {
-        NULL
-      }else{
-        attr(nestedList[[name]],key)
-      }
-    })
-
-    if (!is.null(data) && length(data) > 0) {
-      names(data) <- names(attributes(nestedList[[name]]))
-      data <- data[!unlist(lapply(data,is.null))]
+get_flatList <- function(nstl, fl = NULL, pr = "#") {
+  for (name in names(nstl)) {
+    nstnm <- nstl[[name]]
+    
+    typ = attr(nstnm,"sttype")
+    ico = attr(nstnm,"sticon")
+    if (is.null(typ)) {
+      adatr <- list("icon" = ico)
+    } else {
+      adatr <- list("icon" = ico,"type" = typ)
     }
-
-    nodeData <- append(
-      list(
-        id = as.character(length(flatList) + 1),
-        text = name,
-        parent = parent,
-        state = list(
-          opened   = isTRUE(attr(nestedList[[name]], "stopened")),
-          selected = isTRUE(attr(nestedList[[name]], "stselected"))
-        ),
-        data = data
-      ),
-      additionalAttributes
+    
+    len = as.character(length(fl) + 1)
+    nd <- c(list(
+      id = len,
+      text = name,
+      parent = pr,
+      state = list(
+        opened   = isTRUE(attr(nstnm, "stopened")),
+        selected = isTRUE(attr(nstnm, "stselected"))
+      )
+    ),
+    adatr
     )
-
-    flatList = c(flatList,list(nodeData))
-    if (is.list(nestedList[[name]])) {
-      flatList = get_flatList(nestedList[[name]], flatList, parent = as.character(length(flatList)))
-      }
+    
+    fl = c(fl,list(nd))
+    if (is.list(nstnm)) {
+      fl = get_flatList(nstnm, fl, pr=len)
+    }
   }
-  flatList
+  fl
 }
