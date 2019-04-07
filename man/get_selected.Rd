@@ -4,8 +4,7 @@
 \alias{get_selected}
 \title{Get the selected nodes from a tree}
 \usage{
-get_selected(tree, format = c("names", "names2", "names3", "names4",
-  "slices", "classid"))
+get_selected(tree, format = c("names", "slices", "classid"))
 }
 \arguments{
 \item{tree}{The \code{input$tree} shinyTree you want to 
