@@ -11,38 +11,39 @@
 #' a function (receiving the current state as argument) the result of that
 #' function will be used as state.
 #' @export
-updateTree <- function(session, treeId, data=NULL, skipload=F, fortgetstate=T) {
-  if(is.list(data)){
-    data<-Rlist2json(data)
-  }
+updateTree <- function(session, treeId, data=NULL, skipload = TRUE, fortgetstate = FALSE) {
+  data <- Rlist2json(data)
   message <- list(type="updateTree",data=data, skipload=skipload, fortgetstate=fortgetstate)
-  if(!is.null(message)) {
-    print(paste("Update: ", data))
-    # print(data)
-    session$sendInputMessage(treeId, message)
-  }
+  session$sendInputMessage(treeId, message)
 }
 
-#' @importFrom jsonlite toJSON
+#' @importFrom rjson toJSON
 Rlist2json <- function(nestedList) {
-   d <- as.character(jsonlite::toJSON(get_flatList(nestedList), auto_unbox = T))
-   d
+  d <- as.character(toJSON(get_flatList(nestedList)))
+  gsub(d, pattern = "null", fixed = TRUE, replacement = "{}")
 }
 
 get_flatList <- function(nestedList, flatList = NULL, parent = "#") {
   for (name in names(nestedList)) {
-    additionalAttributeNames <- c("icon","type", "class")
-    additionalAttributes<- lapply(additionalAttributeNames,function(attribute){
-      if(attribute == "icon"){
-        fixIconName(attr(nestedList[[name]],paste0("st",attribute)))
+    additionalAttributes <- list(
+      "icon" = attr(nestedList[[name]],"sticon"),
+      "type" = attr(nestedList[[name]],"sttype")
+    )
+
+    additionalAttributes <- additionalAttributes[!unlist(lapply(additionalAttributes,is.null))]
+
+    data <- lapply(names(attributes(nestedList[[name]])), function(key){
+      if (key %in% c("icon","type","names","stopened","stselected","sttype")) {
+        NULL
       }else{
-        attr(nestedList[[name]],paste0("st",attribute))
+        attr(nestedList[[name]],key)
       }
     })
-    names(additionalAttributes) <-  additionalAttributeNames
-    additionalAttributes <- additionalAttributes[which(sapply(additionalAttributes,Negate(is.null)))]
-    # print("additionalAttributes")
-    # print(additionalAttributes)
+
+    if (!is.null(data) && length(data) > 0) {
+      names(data) <- names(attributes(nestedList[[name]]))
+      data <- data[!unlist(lapply(data,is.null))]
+    }
 
     nodeData <- append(
       list(
@@ -52,17 +53,16 @@ get_flatList <- function(nestedList, flatList = NULL, parent = "#") {
         state = list(
           opened   = isTRUE(attr(nestedList[[name]], "stopened")),
           selected = isTRUE(attr(nestedList[[name]], "stselected"))
-        )
+        ),
+        data = data
       ),
       additionalAttributes
     )
-    print("nodeData")
-    print(nodeData)
 
     flatList = c(flatList,list(nodeData))
-    if (is.list(nestedList[[name]]))
-      flatList =
-        get_flatList(nestedList[[name]], flatList, parent = as.character(length(flatList)))
+    if (is.list(nestedList[[name]])) {
+      flatList = get_flatList(nestedList[[name]], flatList, parent = as.character(length(flatList)))
+      }
   }
   flatList
 }

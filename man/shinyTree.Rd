@@ -6,9 +6,8 @@
 \usage{
 shinyTree(outputId, checkbox = F, search = F, dragAndDrop = F,
   types = NULL, theme = "default", themeIcons = T, themeDots = T,
-  contextmenu = T, sort = T, unique = T, wholerow = T,
-  searchtime = 1000, state = T, openAll = F, closeAll = F,
-  toggleStripes = F, toggleDots = F, toggleIcons = F)
+  contextmenu = F, sort = F, unique = T, wholerow = T,
+  searchtime = 1000, state = F)
 }
 \arguments{
 \item{outputId}{The ID associated with this element}
@@ -43,22 +42,6 @@ tree.}
 
 \item{state}{If \code{TRUE}, will enable the state plugin and will store the tree nodes in the 
 browser, so opened and selected nodes will remain after a page refresh. The key used is 'jstree'}
-
-\item{openAll}{Activates a button to open all nodes if \code{TRUE}. Can be a list with
-\emph{id}, \emph{class}, \emph{label} for the button. \code{FALSE} or \code{NULL} will deactivate
-the button.}
-
-\item{closeAll}{Activates a button to close all opened nodes if \code{TRUE}. Can be a list with
-\emph{id}, \emph{class}, \emph{label}, \emph{icon} for the button.}
-
-\item{toggleStripes}{Activates a button to toggle stripes if \code{TRUE}. Can be a list with
-\emph{id}, \emph{class}, \emph{label}, \emph{icon} for the button.}
-
-\item{toggleDots}{Activates a button to toggle the dots if \code{TRUE}. Can be a list with
-\emph{id}, \emph{class}, \emph{label}, \emph{icon} for the button.}
-
-\item{toggleIcons}{Activates a button to toggle the icons if \code{TRUE}. Can be a list with
-\emph{id}, \emph{class}, \emph{label}, \emph{icon} for the button.}
 }
 \description{
 This creates a spot in your Shiny UI for a shinyTree which can then be filled
