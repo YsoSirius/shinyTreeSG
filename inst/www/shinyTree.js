@@ -184,8 +184,8 @@ var shinyTree = function(){
       // This receives messages of type "updateTree" from the server.
       if(message.type == 'updateTree' && typeof message.data !== 'undefined') {
           $(el).jstree(true).settings.core.data = JSON.parse(message.data);
-          $(el).jstree(true).refresh(message.skipload, message.fortgetstate);
-          //$(el).jstree(true).refresh(true, false);
+          //$(el).jstree(true).redraw(true);
+          $(el).jstree(true).refresh(true, false);
       }
     }
   });

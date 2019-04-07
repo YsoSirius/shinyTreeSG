@@ -39,6 +39,7 @@ get_flatList <- function(nestedList, flatList = NULL, parent = "#") {
         attr(nestedList[[name]],key)
       }
     })
+
     if (!is.null(data) && length(data) > 0) {
       names(data) <- names(attributes(nestedList[[name]]))
       data <- data[!unlist(lapply(data,is.null))]
